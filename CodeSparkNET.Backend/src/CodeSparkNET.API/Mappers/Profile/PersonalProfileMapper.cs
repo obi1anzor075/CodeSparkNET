@@ -1,4 +1,5 @@
-﻿using CodeSparkNET.Application.Dtos.Profile;
+﻿using CodeSparkNET.Application.Dtos.Account.Profile;
+using CodeSparkNET.Application.Dtos.Profile;
 using CodeSparkNET.WEB.ViewModels.Profile;
 
 namespace CodeSparkNET.WEB.Mappers.Profile

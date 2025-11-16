@@ -40,6 +40,8 @@ namespace CodeSparkNET.Domain.Models
         /// </summary>
         public DateTime EmailChangedAt { get; set; } = DateTime.MinValue;
 
+        public bool ConfirmAd { get; set; }
+
         /// <summary>
         /// Navigation property representing the list of courses assigned to the user.
         /// </summary>

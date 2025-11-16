@@ -1,4 +1,4 @@
-﻿namespace CodeSparkNET.Application.Dtos.Profile
+﻿namespace CodeSparkNET.Application.Dtos.Account.Profile
 {
     public class AllUserCoursesDto
     {

@@ -1,3 +1,4 @@
+using CodeSparkNET.Application.Dtos.Account.Profile;
 using CodeSparkNET.Application.Dtos.Profile;
 using CodeSparkNET.Domain.Models;
 using Microsoft.AspNetCore.Identity;
