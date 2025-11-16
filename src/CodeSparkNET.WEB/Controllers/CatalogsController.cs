@@ -80,7 +80,7 @@ namespace CodeSparkNET.WEB.Controllers
         }
 
         [Authorize]
-        [HttpGet("/Catalog/ProductDetails/{catalogSlug}/{productSlug}")]
+        [HttpGet("/Catalogs/ProductDetails/{catalogSlug}/{productSlug}")]
         public async Task<IActionResult> ProductDetails(string catalogSlug, string productSlug)
         {
             try
