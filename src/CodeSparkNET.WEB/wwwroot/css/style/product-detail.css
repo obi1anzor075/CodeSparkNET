@@ -3,7 +3,6 @@
   --gutter: 20px;
 }
 
-/* Make images responsive */
 img {
   max-width: 100%;
   height: auto;
@@ -11,7 +10,6 @@ img {
   border: 0;
 }
 
-/* Prevent very long words breaking layout */
 * {
   word-break: normal;
 }
@@ -24,9 +22,6 @@ img {
   overflow-wrap: anywhere;
 }
 
-/* -------------------------
-   Layout root
-   ------------------------- */
 main[data-layout="main"][role="main"] {
   display: flex;
   flex-direction: row;

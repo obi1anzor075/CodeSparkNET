@@ -8,132 +8,123 @@
     <title>@ViewData["Title"] – @ViewData["App"]</title>
 
     <style>
-        body.not-ready {
-            position: relative;
-            overflow: hidden;
+    body.not-ready {
+        position: relative;
+        overflow: hidden;
 
-            &::after {
-                content: "";
-                position: fixed;
-                z-index: 1000;
-                inset: 0;
-                width: 100%;
-                height: 100%;
-                background: #1f1f1f;
-            }
-        }
-
-        #app-root {
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity .25s ease;
-        }
-
-        #app-root.ready {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        #page-styles-container,
-        #page-scriptsMain-container,
-        #page-scriptsAdditions-container {
-            display: none;
-        }
-
-        [js-load-page] {
+        &::after {
+            content: "";
             position: fixed;
+            z-index: 1000;
             inset: 0;
-            opacity: 1;
-            z-index: 2000;
-            display: flex;
-            height: 100%;
             width: 100%;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+            height: 100%;
             background: #1f1f1f;
         }
+    }
 
-        [js-load-page] section {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            transition: .6s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 35px;
-            background: #ffd23f30;
-            border: 2px #ffd23f solid;
-            border-radius: 8px;
-            padding: 10px;
-        }
+    #app-root {
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity .25s ease;
+    }
 
-        [js-bad-load] {
-            width: 60px;
-            height: 50px;
-            --m: no-repeat linear-gradient(90deg, #000 70%, #0000 0);
-            -webkit-mask:
-                var(--m) calc(0*100%/4) 100%/calc(100%/5) calc(1*100%/5),
-                var(--m) calc(1*100%/4) 100%/calc(100%/5) calc(2*100%/5),
-                var(--m) calc(2*100%/4) 100%/calc(100%/5) calc(3*100%/5),
-                var(--m) calc(3*100%/4) 100%/calc(100%/5) calc(4*100%/5),
-                var(--m) calc(4*100%/4) 100%/calc(100%/5) calc(5*100%/5);
-            background: linear-gradient(#ffa216 0 0) left/0% 100% no-repeat #ddd;
-            animation: load-not_conntecion 2s infinite steps(6);
-        }
+    #app-root.ready {
+        visibility: visible;
+        opacity: 1;
+    }
 
-        [js-load-page] section article {
-            color: #ffd23f;
-            font-weight: 700;
-            font-size: 20px;
-        }
+    #page-styles-container,
+    #page-scriptsMain-container,
+    #page-scriptsAdditions-container {
+        display: none;
+    }
 
-        [js-loader] {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            transition: .6s ease;
-            width: 70px;
-            aspect-ratio: 1;
-            display: grid;
-        }
+    [js-load-page] {
+        position: fixed;
+        inset: 0;
+        opacity: 1;
+        z-index: 2000;
+        display: flex;
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background: #1f1f1f;
+        transition: opacity 0.6s ease;
+    }
 
-        [js-loader]::before,
-        [js-loader]::after {
-            content: "";
-            grid-area: 1/1;
-            --c: no-repeat radial-gradient(farthest-side, #9780e5 92%, #0000);
-            background:
-                var(--c) 50% 0,
-                var(--c) 50% 100%,
-                var(--c) 100% 50%,
-                var(--c) 0 50%;
-            background-size: 20px 20px;
-            animation: load-main 1s infinite;
-        }
+    [js-loader] {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transition: top 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 70px;
+        aspect-ratio: 1;
+        display: grid;
+    }
 
-        [js-loader]::before {
-            margin: 4px;
-            filter: hue-rotate(45deg);
-            background-size: 12px 12px;
-            animation-timing-function: linear;
-        }
+    [js-loader]::before,
+    [js-loader]::after {
+        content: "";
+        grid-area: 1/1;
+        --c: no-repeat radial-gradient(farthest-side, #9780e5 92%, #0000);
+        background:
+            var(--c) 50% 0,
+            var(--c) 50% 100%,
+            var(--c) 100% 50%,
+            var(--c) 0 50%;
+        background-size: 20px 20px;
+        animation: load-main 1s infinite;
+    }
 
-        @@keyframes load-main {
-            100% {
-                transform: rotate(.5turn)
-            }
-        }
+    [js-loader]::before {
+        margin: 4px;
+        filter: hue-rotate(45deg);
+        background-size: 12px 12px;
+        animation-timing-function: linear;
+    }
 
-        @@keyframes load-not_conntecion {
-            100% {
-                background-size: 120% 100%
-            }
+    [js-loading-phrases] {
+        position: absolute;
+        bottom: 25%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        max-width: 500px;
+        text-align: center;
+        animation: phrases-fade-in 0.8s ease forwards;
+    }
+
+    [js-phrase-text] {
+        color: #9780e5;
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+        text-shadow: 0 0 20px rgba(151, 128, 229, 0.3);
+    }
+
+    @@keyframes load-main {
+        100% {
+            transform: rotate(.5turn)
         }
-    </style>
+    }
+
+    @@keyframes phrases-fade-in {
+        from {
+            opacity: 0;
+            transform: translateX(-50%) translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    }
+</style>
 
     <script src="~/js/app/js-load.await.js"></script>
 

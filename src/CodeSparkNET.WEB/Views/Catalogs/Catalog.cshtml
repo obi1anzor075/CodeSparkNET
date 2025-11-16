@@ -11,50 +11,18 @@
 
 <partial name="_WebApp_Navbar_header" />
 
-<aside class="filter controller">
-
-</aside>
-
 <div class="__container catalog" id="CatalogSectionOn">
   <div class="name-catalog">
-    <h1>@Model?.Name</h1>
+    <h1 class="catalog-loading">Загрузка каталога...</h1>
   </div>
 
-  @if (Model?.Products == null || !Model.Products.Any())
-  {
-    <p>Товары не найдены.</p>
-  }
-  else
-  {
-    <div class="grid">
-      @foreach (var p in Model.Products)
-      {
-        <article class="card">
-          <a asp-controller="Catalogs" asp-action="ProductDetails" asp-route-catalogSlug="@Model.Slug"
-            asp-route-productSlug="@p.Slug" hover>
+  <div class="catalog-content"></div>
 
-            @if (p.ProductImages?.Any() == true && !string.IsNullOrEmpty(p.ProductImages.First().Url))
-            {
-              <img src="@p.ProductImages.Where(i => i.IsMain).FirstOrDefault().Url" alt="@p.Name" />
-            }
-            else
-            {
-              <img class="no-image" src="~/assets/img/no-image.png" alt="no image" />
-            }
-
-            <div class="overview-bg">
-              <h3 class="name">@p.Name</h3>
-              <p>@p.ShortDescription</p>
-              @if (p.HasPrice)
-              {
-                <h3 class="cent">@p.Price @p.Currency</h3>
-              }
-            </div>
-          </a>
-        </article>
-      }
-    </div>
-  }
+  <div class="loader spinner3" id="LoaderSpinner"></div>
 </div>
+
+@section ScriptsAdditions {
+  <script data-src="@(Url.Content("~/js/api/catalogsGetCard.js"))" type="text/plain"></script>
+}
 
 <partial name="_WebApp_Navbar_footer" />

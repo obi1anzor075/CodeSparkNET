@@ -58,14 +58,17 @@ namespace CodeSparkNET.WEB.Controllers
             }
         }
 
+        public IActionResult Catalog()
+        {
+            return View();
+        }
+
         [HttpGet("/Catalogs/Catalog/{catalogSlug}")]
         public async Task<IActionResult> GetCatalogBySlug(string catalogSlug)
         {
             try
             {
                 var catalog = await _catalogService.GetCatalogBySlugAsync(catalogSlug);
-
-                //TODO: Сделать новое DTO и написать новый метод GetCatalogProductsByGroup
 
                 return Ok(catalog);
             }

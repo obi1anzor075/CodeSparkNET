@@ -100,7 +100,6 @@ function isBlockTag(node) {
     return /^(p|div|h[1-6]|ul|ol|li|table|thead|tbody|tr|td|th|pre|blockquote|section|article|aside|header|footer)$/i.test(t);
 }
 
-// ---------- Remove comments ----------
 function removeCommentsFromNode(node) {
     if (!node) return;
     const walker = document.createTreeWalker(node, NodeFilter.SHOW_COMMENT, null, false);
@@ -110,7 +109,6 @@ function removeCommentsFromNode(node) {
     toRemove.forEach(c => c.parentNode && c.parentNode.removeChild(c));
 }
 
-// ---------- Strip font styles ----------
 function stripFontStyles(el) {
     if (!el || el.nodeType !== 1) return;
     try {

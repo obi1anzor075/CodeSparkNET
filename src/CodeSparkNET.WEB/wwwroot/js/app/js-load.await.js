@@ -1,16 +1,25 @@
 (function () {
   'use strict';
 
-  // --- Конфиг ---
   const cfg = {
     getInfo: '/js/app/get-info-about-device.js',
     assembleJs: '/js/app/assemble.js',
     assembleCss: '/css/Root/assemble.css',
     markupCss: '/css/Markup/layout-markup.css',
-    tolerateFailures: true
+    tolerateFailures: true,
+    loadingPhrases: [
+      'Настраиваем каталоги',
+      'Скоро всё вот вот заработает',
+      'Загружаем данные',
+      'Подготавливаем интерфейс',
+      'Синхронизируем компоненты',
+      'Финальные штрихи',
+      'Почти готово'
+    ],
+    phraseChangeInterval: 3000,
+    showPhrasesAfter: 5000
   };
 
-  // --- утилиты ---
   function log(...a) { console.log('[app-loader]', ...a); }
   function warn(...a) { console.warn('[app-loader]', ...a); }
   function fail(...a) { console.error('[app-loader]', ...a); }
@@ -52,7 +61,6 @@
     return loadPage;
   }
 
-  // --- извлечение ресурсов, указанных в Razor секциях ---
   function extractResources() {
     const res = { styles: [], scriptsMain: [], scriptsAdditions: [] };
 
@@ -71,7 +79,6 @@
       });
     }
 
-    // Функция для обработки скрипта
     function processScript(s, priority) {
       const dataSrc = s.getAttribute('data-src');
       const src = s.getAttribute('src');
@@ -92,7 +99,6 @@
         if (priority === 'addition' || priority === 'async') {
           res.scriptsAdditions.push(scriptData);
         } else {
-          // По умолчанию main или если указано 'main'
           res.scriptsMain.push(scriptData);
         }
       }
@@ -100,7 +106,6 @@
       try { s.remove(); } catch (e) { }
     }
 
-    // Основные скрипты из контейнера
     const scriptsMainContainer = document.getElementById('page-scriptsMain-container');
     if (scriptsMainContainer) {
       const scripts = Array.from(scriptsMainContainer.querySelectorAll('script'));
@@ -110,21 +115,17 @@
       });
     }
 
-    // Дополнительные скрипты из контейнера
     const scriptsAdditionsContainer = document.getElementById('page-scriptsAdditions-container');
     if (scriptsAdditionsContainer) {
       const scripts = Array.from(scriptsAdditionsContainer.querySelectorAll('script'));
       scripts.forEach(s => {
         const priority = s.getAttribute('data-load-priority');
-        // Для этого контейнера по умолчанию additions, но можно переопределить
         processScript(s, priority || 'addition');
       });
     }
 
-    // Обрабатываем скрипты из body с атрибутом data-load-priority
     const priorityScripts = Array.from(document.querySelectorAll('script[data-load-priority]'));
     priorityScripts.forEach(s => {
-      // Проверяем, что скрипт не был уже обработан из контейнеров
       if (s.parentElement && !s.parentElement.id?.includes('page-scripts')) {
         const priority = s.getAttribute('data-load-priority');
         processScript(s, priority);
@@ -134,7 +135,6 @@
     return res;
   }
 
-  // execute inline script
   function execInline(js) {
     const s = document.createElement('script');
     s.type = 'text/javascript';
@@ -143,40 +143,55 @@
     return s;
   }
 
-  // --- основная последовательность ---
   async function run() {
     const start = Date.now();
     const MIN_SHOW = 250;
-    const SHOW_ERROR_AFTER = 7500;
-    let errorShown = false;
+    let phrasesShown = false;
+    let phraseInterval = null;
 
     const bigLoader = createBigLoader();
     document.body.appendChild(bigLoader);
 
-    function showBadLoadMessage(text) {
-      if (errorShown) return;
-      errorShown = true;
+    function showLoadingPhrases() {
+      if (phrasesShown) return;
+      phrasesShown = true;
 
-      const section = document.createElement('section');
-      section.setAttribute('js-bad-load-visible', '');
+      const phrasesContainer = document.createElement('div');
+      phrasesContainer.setAttribute('js-loading-phrases', '');
 
-      const badLoad = document.createElement('div');
-      badLoad.setAttribute('js-bad-load', '');
+      const phraseText = document.createElement('p');
+      phraseText.setAttribute('js-phrase-text', '');
+      phraseText.textContent = cfg.loadingPhrases[0];
 
-      const article = document.createElement('article');
-      article.textContent = text;
-
-      section.appendChild(badLoad);
-      section.appendChild(article);
+      phrasesContainer.appendChild(phraseText);
+      bigLoader.appendChild(phrasesContainer);
 
       const loader = bigLoader.querySelector('[js-loader]');
-      bigLoader.insertBefore(section, loader);
-      if (loader) loader.style.top = '70%';
+      if (loader) {
+        loader.style.top = '35%';
+      }
+
+      let currentIndex = 0;
+      phraseInterval = setInterval(() => {
+        phraseText.style.opacity = '0';
+
+        setTimeout(() => {
+          currentIndex = (currentIndex + 1) % cfg.loadingPhrases.length;
+          phraseText.textContent = cfg.loadingPhrases[currentIndex];
+          phraseText.style.opacity = '1';
+        }, 300);
+      }, cfg.phraseChangeInterval);
     }
 
     function hideLoader() {
       const elapsed = Date.now() - start;
       const wait = elapsed < MIN_SHOW ? MIN_SHOW - elapsed : 0;
+
+      if (phraseInterval) {
+        clearInterval(phraseInterval);
+        phraseInterval = null;
+      }
+
       setTimeout(() => {
         bigLoader.style.opacity = '0';
         document.body.style.overflow = '';
@@ -184,20 +199,16 @@
       }, wait);
     }
 
-    const errorTimeout = setTimeout(() => {
+    const phrasesTimeout = setTimeout(() => {
       if (document.readyState !== 'complete') {
-        const msg = navigator.onLine
-          ? 'Плохое интернет соединение'
-          : 'Плохое интернет соединение';
-        showBadLoadMessage(msg);
+        showLoadingPhrases();
       }
-    }, SHOW_ERROR_AFTER);
+    }, cfg.showPhrasesAfter);
 
     const resources = extractResources();
     log('extracted resources', resources);
 
     try {
-      // 1) get-info
       try {
         await loadScript(cfg.getInfo, { async: false });
         log('get-info loaded');
@@ -206,7 +217,6 @@
         if (!cfg.tolerateFailures) throw e;
       }
 
-      // 2) assemble.js
       try {
         await loadScript(cfg.assembleJs, { async: false });
         log('assemble loaded');
@@ -215,7 +225,6 @@
         if (!cfg.tolerateFailures) throw e;
       }
 
-      // 3) load ONLY MAIN page scripts (synchronously, in order)
       for (const sc of resources.scriptsMain) {
         if (typeof sc === 'string') {
           try {
@@ -231,7 +240,6 @@
         }
       }
 
-      // 4) load assemble.css -> markup -> page css (in this order)
       try {
         await loadCss(cfg.assembleCss);
         log('assemble css loaded');
@@ -246,7 +254,6 @@
         warn('markup css not loaded', e);
       }
 
-      // load per-page css (from resources.styles)
       for (const st of resources.styles) {
         if (typeof st === 'string') {
           try {
@@ -264,8 +271,7 @@
         }
       }
 
-      // 5) main resources done — hide loader and reveal app
-      clearTimeout(errorTimeout);
+      clearTimeout(phrasesTimeout);
       const app = document.getElementById('app-root');
       if (app) {
         document.body.classList.remove('not-ready');
@@ -273,10 +279,8 @@
         hideLoader();
       }
 
-      // 6) progressively: ADDITIONS scripts (do not block UX)
       (async function progressive() {
         try {
-          // Загружаем additions scripts асинхронно
           const additionsPromises = resources.scriptsAdditions.map(async (sc) => {
             if (typeof sc === 'string') {
               try {
@@ -292,7 +296,6 @@
             }
           });
 
-          // Дожидаемся завершения всех additions scripts
           await Promise.all(additionsPromises);
           log('all additions scripts loaded');
 
@@ -303,7 +306,7 @@
 
     } catch (e) {
       fail('Loader fatal error', e);
-      clearTimeout(errorTimeout);
+      clearTimeout(phrasesTimeout);
       const app = document.getElementById('app-root');
       if (app) {
         app.classList.add('ready');
@@ -313,14 +316,12 @@
     }
   }
 
-  // start loader when DOM ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', run);
   } else {
     run();
   }
 
-  // expose simple API to load a module on demand
   window.appLoader = window.appLoader || {};
   window.appLoader.loadModule = async function (src) {
     if (!src) return Promise.reject(new Error('empty src'));
