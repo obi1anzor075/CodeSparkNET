@@ -811,7 +811,8 @@ if (courseBasicsForm) {
             Slug: document.getElementById('CourseSlugInput')?.value,
             ShortDescription: document.getElementById('ShortDescription')?.value,
             FullDescription: document.getElementById('FullDescription')?.value,
-            MainImageUrl: document.getElementById('MainImageUrl')?.value
+            MainImageUrl: document.getElementById('MainImageUrl')?.value,
+            Group: document.getElementById('CourseGroup')?.value,
         };
 
         const res = await postUrlEncoded('/AdminCourse/UpdateCourse', formData);

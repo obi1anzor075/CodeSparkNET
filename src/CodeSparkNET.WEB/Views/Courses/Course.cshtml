@@ -62,6 +62,15 @@
 @section ScriptsAdditions {
   <script data-src="@(Url.Content("~/js/api/course-src.js"))" type="text/plain"></script>
   <script data-src="@(Url.Content("~/js/style/course.styleScript.js"))" type="text/plain"></script>
+  <script id="MathJax-script" async data-src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js" type="text/plain"></script>
+  <script data-load-priority="addition" type="text/plain">
+      MathJax = {
+        tex: {
+          inlineMath: {'[+]': [['$', '$']]}
+        }
+      };
+  </script>
+  <script defer data-src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js" type="text/plain"></script>
 }
 
 <partial name="_WebApp_Navbar_footer" />

@@ -7,6 +7,7 @@
         public string Slug { get; set; }
         public string? ShortDescription { get; set; }
         public string? FullDescription { get; set; }
+        public string Group { get; set; }
         public List<ModuleViewModel> Modules { get; set; }
         public List<ProductImageViewModel> Images { get; set; }
     }

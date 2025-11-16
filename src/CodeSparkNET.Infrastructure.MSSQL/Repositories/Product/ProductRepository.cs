@@ -164,7 +164,8 @@ namespace CodeSparkNET.Infrastructure.Repositories.Product
                 IsPublished = dto.IsPublished,
                 ShortDescription = dto.ShortDescription,
                 FullDescription = dto.FullDescription,
-                ProductType = "Course"
+                ProductType = "Course",
+                Group = dto.Group
             };
 
             using var tx = await _context.Database.BeginTransactionAsync();
@@ -218,6 +219,7 @@ namespace CodeSparkNET.Infrastructure.Repositories.Product
             course.Slug = model.Slug;
             course.ShortDescription = model.ShortDescription;
             course.FullDescription = model.FullDescription;
+            course.Group = model.Group;
 
             var existingMain = course.ProductImages?.FirstOrDefault(pi => pi.IsMain);
 

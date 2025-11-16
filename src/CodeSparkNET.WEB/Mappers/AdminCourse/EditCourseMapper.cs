@@ -15,7 +15,8 @@ namespace CodeSparkNET.WEB.Mappers.AdminCourse
                 Name = viewModel.Name.Trim(),
                 ShortDescription = viewModel.ShortDescription.Trim(),
                 FullDescription = viewModel.FullDescription.Trim(),
-                MainImageUrl = viewModel.MainImageUrl.Trim()
+                MainImageUrl = viewModel.MainImageUrl.Trim(),
+                Group = viewModel.Group.Trim()
             };
         }
 
@@ -29,7 +30,8 @@ namespace CodeSparkNET.WEB.Mappers.AdminCourse
                 Name = model.Name,
                 ShortDescription = model.ShortDescription,
                 FullDescription = model.FullDescription,
-                MainImageUrl = model.MainImageUrl.Trim()
+                MainImageUrl = model.MainImageUrl.Trim(),
+                Group = model.Group
             };
         }
     }

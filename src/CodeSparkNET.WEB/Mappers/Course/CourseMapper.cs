@@ -19,6 +19,7 @@ namespace CodeSparkNET.WEB.Mappers.Course
                 Slug = model.Slug,
                 ShortDescription = model.ShortDescription,
                 FullDescription = model.FullDescription,
+                Group = model.Group,
                 Modules = model.Modules?.Select(m => new ModuleDto
                 {
                     Id = m.Id,
@@ -60,6 +61,7 @@ namespace CodeSparkNET.WEB.Mappers.Course
                 Slug = dto.Slug,
                 ShortDescription = dto.ShortDescription,
                 FullDescription = dto.FullDescription,
+                Group = dto.Group,
                 Modules = dto.Modules?.Select(m => new ModuleViewModel
                 {
                     Id = m.Id,

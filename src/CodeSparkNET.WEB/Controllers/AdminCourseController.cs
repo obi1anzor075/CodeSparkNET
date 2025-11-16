@@ -60,7 +60,8 @@ namespace CodeSparkNET.WEB.Controllers
                 Slug = course.Slug,
                 ShortDescription = course.ShortDescription,
                 FullDescription = course.FullDescription,
-                MainImageUrl = course.Images?.FirstOrDefault(i => i.IsMain)?.Url
+                MainImageUrl = course.Images?.FirstOrDefault(i => i.IsMain)?.Url,
+                Group = course.Group
             };
 
             return View(model);

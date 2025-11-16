@@ -14,5 +14,6 @@
         public string? ShortDescription { get; set; }
         public string? FullDescription { get; set; }
         public string? MainImageUrl { get; set; }
+        public string Group { get; set; }
     }
 }

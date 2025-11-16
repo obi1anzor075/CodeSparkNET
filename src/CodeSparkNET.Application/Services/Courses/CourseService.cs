@@ -24,6 +24,7 @@ namespace CodeSparkNET.Application.Services.Courses
                 Slug = course.Slug,
                 ShortDescription = course.ShortDescription,
                 FullDescription = course.FullDescription,
+                Group = course.Group,
                 Images = course.ProductImages
                     .OrderBy(pi => pi.Position)
                     .Select(pi => new ProductImageDto
@@ -116,6 +117,7 @@ namespace CodeSparkNET.Application.Services.Courses
                 Slug = course.Slug,
                 ShortDescription = course.ShortDescription,
                 FullDescription = course.FullDescription,
+                Group = course.Group,
                 Images = course.ProductImages?.OrderBy(pi => pi.Position).Select(pi => new ProductImageDto
                 {
                     Url = pi.Url ?? pi.Name ?? "",
@@ -267,6 +269,7 @@ namespace CodeSparkNET.Application.Services.Courses
                 Slug = course.Slug,
                 ShortDescription = course.ShortDescription,
                 FullDescription = course.FullDescription,
+                Group = course.Group,
                 Images = course.ProductImages?.OrderBy(pi => pi.Position).Select(pi => new ProductImageDto
                 {
                     Url = pi.Url ?? pi.Name ?? "",
