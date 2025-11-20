@@ -319,54 +319,58 @@
   }
 
   async function ensureMathJax() {
-      if (window.MathJax) {
-          return (MathJax.startup && MathJax.startup.promise) ? MathJax.startup.promise : Promise.resolve();
-      }
+    if (window.MathJax) {
+      return (MathJax.startup && MathJax.startup.promise) ? MathJax.startup.promise : Promise.resolve();
+    }
 
-      return new Promise((resolve, reject) => {
-          const s = document.createElement('script');
-          s.src = 'https://cdn.jsdelivr.net/npm/mathjax@4/es5/tex-svg.js';
-          s.defer = true;
-          s.onload = () => {
-              if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
-                  MathJax.startup.promise.then(resolve).catch(reject);
-              } else {
-                  resolve();
-              }
-          };
-          s.onerror = (e) => reject(new Error('Failed to load MathJax: ' + e));
-          document.head.appendChild(s);
-      });
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/mathjax@4/es5/tex-svg.js';
+      s.defer = true;
+      s.onload = () => {
+        if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+          MathJax.startup.promise.then(resolve).catch(reject);
+        } else {
+          resolve();
+        }
+      };
+      s.onerror = (e) => reject(new Error('Failed to load MathJax: ' + e));
+      document.head.appendChild(s);
+    });
   }
 
   async function loadLessonBySlug(lessonSlug) {
-      try {
-          lessonTitleEl.textContent = 'Загрузка...';
-          lessonBodyEl.innerHTML = '';
+    try {
+      lessonTitleEl.textContent = 'Загрузка...';
+      lessonBodyEl.innerHTML = '';
 
-          const res = await fetch(`/Courses/GetLessonContent/${encodeURIComponent(courseSlug)}/lessons/${encodeURIComponent(lessonSlug)}`);
-          if (!res.ok) throw new Error('Урок не найден');
-          const lesson = await res.json();
+      const res = await fetch(`/Courses/GetLessonContent/${encodeURIComponent(courseSlug)}/lessons/${encodeURIComponent(lessonSlug)}`);
+      if (!res.ok) throw new Error('Урок не найден');
+      const lesson = await res.json();
 
-          lessonTitleEl.textContent = lesson.title;
-          lessonBodyEl.innerHTML = lesson.body || '<p>Нет содержимого.</p>';
+      lessonTitleEl.textContent = lesson.title;
+      lessonBodyEl.innerHTML = lesson.body || '<p>Нет содержимого.</p>';
 
-          processCodeBlocks();
+      processCodeBlocks();
 
-          try {
-              await ensureMathJax();
-              if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
-                  await MathJax.typesetPromise();
-              }
-          } catch (mjErr) {
-              console.warn('MathJax error or not available:', mjErr);
-          }
-
-      } catch (err) {
-          lessonTitleEl.textContent = 'Ошибка загрузки урока';
-          lessonBodyEl.innerHTML = '<div>Не удалось загрузить содержимое.</div>';
-          console.error(err);
+      if (typeof window.initSliders === 'function') {
+        window.initSliders();
       }
+
+      try {
+        await ensureMathJax();
+        if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
+          await MathJax.typesetPromise();
+        }
+      } catch (mjErr) {
+        console.warn('MathJax error or not available:', mjErr);
+      }
+
+    } catch (err) {
+      lessonTitleEl.textContent = 'Ошибка загрузки урока';
+      lessonBodyEl.innerHTML = '<div>Не удалось загрузить содержимое.</div>';
+      console.error(err);
+    }
   }
 
   // ========== INITIAL LOAD ==========

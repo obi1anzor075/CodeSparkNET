@@ -9,10 +9,10 @@ html[cross-browser] {
       display: flex;
       flex-direction: column;
       width: 100%;
-      max-width: 100%;
+      max-width: 1440px;
       margin-top: 85px;
       gap: 50px;
-      overflow-x: hidden;
+      padding-inline: 7.5px;
 
       .name-catalog {
         display: flex;

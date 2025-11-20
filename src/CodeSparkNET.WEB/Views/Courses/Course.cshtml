@@ -60,30 +60,32 @@
 </div>
 
 @section ScriptsAdditions {
-    <script data-load-priority="addition" type="text/plain">
-        window.MathJax = {
-          loader: {
-            load: ['input/tex', 'output/chtml']
-          },
-          tex: {
-            inlineMath: [['$', '$'], ['\\(', '\\)']]
-          },
-          startup: {
-            menu: false
-          },
-          options: {
-            renderActions: {
-              addMenu: [],
-              accessibility: [],
-              assistiveMml: [],
-              explorable: []
-            }
-          }
-        };
-    </script>
-    <script data-load-priority="addition" defer data-src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js" type="text/plain"></script>
-    <script data-src="@(Url.Content("~/js/api/course-src.js"))" type="text/plain"></script>
+  <script data-load-priority="addition" type="text/plain">
+                    window.MathJax = {
+                      loader: {
+                        load: ['input/tex', 'output/chtml']
+                      },
+                      tex: {
+                        inlineMath: [['$', '$'], ['\\(', '\\)']]
+                      },
+                      startup: {
+                        menu: false
+                      },
+                      options: {
+                        renderActions: {
+                          addMenu: [],
+                          accessibility: [],
+                          assistiveMml: [],
+                          explorable: []
+                        }
+                      }
+                    };
+            </script>
+  <script data-load-priority="addition" defer data-src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"
+    type="text/plain"></script>
+  <script data-src="@(Url.Content("~/js/api/course-src.js"))" type="text/plain"></script>
   <script data-src="@(Url.Content("~/js/style/course.styleScript.js"))" type="text/plain"></script>
+  <script data-src="@(Url.Content("~/js/style/course.sliderScript.js"))" type="text/plain"></script>
 }
 
 <partial name="_WebApp_Navbar_footer" />

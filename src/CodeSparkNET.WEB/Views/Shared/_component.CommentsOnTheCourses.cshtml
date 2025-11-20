@@ -1,5 +1,40 @@
-<section class="block-comments" id="commentController" data-component="comment-module">
+<section class="block-comments" preview="true" id="commentController" data-component="comment-module">
+  <div class="container">
+    <article class="reviews-menu">
+      <div class="block-btn like"><button></button><span></span></div>
+      <div class="block-btn comments"><button></button><span></span></div>
+    </article>
 
-  
+    <article class="comments-block">
+      <div class="comment default">
+        <button class="warn-this-comments" data-fn="warn-this-comments"></button>
+        <div class="msg-img">
+          <img src="#" alt="message/answer">
+        </div>
+        <msg class="block-message">
+          <div class="name-block"></div>
+          <div class="message"></div>
+          <div class="fn">
+            <div class="block-alt">
+              <span class="public-date"></span>
+              <button class="answer-this-comment" data-fn="answer-this-comments"></button>
+            </div>
+            <button class="like-this-comments" data-fn="like-this-comments"></button>
+          </div>
+        </msg>
+      </div>
+    </article>
+
+    <article class="more-comments">
+      <button data-fn="more-comments"></button>
+    </article>
+
+    <article class="send-comment">
+    <div class="input-comment-block"></div>
+      <button data-fn="send-comments"></button>
+    </article>
+  </div>
+
+  <noscript has-price>@Model.HasPrice</noscript>
 </section>
 <script src="@(Url.Content("~/js/components/commentController.js"))" defer></script>
